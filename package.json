@@ -1,0 +1,32 @@
+{
+    "name": "03-solid-api-fastify",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start:dev": "tsx watch src/server.ts",
+        "start": "node build/server.js",
+        "build": "tsup src --out-dir build"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@fastify/jwt": "^7.2.2",
+        "@prisma/client": "^5.5.2",
+        "bcryptjs": "^2.4.3",
+        "dotenv": "16.3.1",
+        "fastify": "4.24.3",
+        "prisma": "^5.5.2",
+        "zod": "3.22.4"
+    },
+    "devDependencies": {
+        "@types/node": "20.8.10",
+        "@typescript-eslint/eslint-plugin": "6.9.1",
+        "@typescript-eslint/parser": "6.9.1",
+        "eslint": "8.53.0",
+        "tsup": "7.2.0",
+        "tsx": "^3.14.0",
+        "typescript": "5.2.2"
+    }
+}
