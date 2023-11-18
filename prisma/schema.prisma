@@ -35,11 +35,12 @@ model Category {
 }
 
 model Product {
-    id          String  @id @default(uuid())
-    title       String
-    description String?
-    price       Int
-    image_url   String
+    id           String  @id @default(uuid())
+    title        String
+    description  String?
+    price        Int
+    image_url    String
+    is_available Boolean @default(true)
 
     category    Category    @relation(fields: [category_id], references: [id])
     category_id String

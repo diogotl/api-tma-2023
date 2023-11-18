@@ -4,9 +4,9 @@ export async function profile(request: FastifyRequest, reply: FastifyReply) {
 
     // console.log(request.headers);
 
-    await request.jwtVerify();
+    // await request.jwtVerify();
 
-    console.log(request.user);
+    console.log(request.user.sub);
 
     return reply.status(200).send({ message: 'Hello World' });
 }

@@ -3,6 +3,15 @@ import { UsersRepository } from '../users-repository';
 import { prisma } from '../../lib/prisma';
 
 export class PrismaUsersRepository implements UsersRepository {
+    async exists(id: string): Promise<boolean> {
+        // throw new Error('Method not implemented.')
+
+        const user = prisma.user.findFirst(
+            { where: { id } }
+        );
+
+        return user.then(user => !!user);
+    }
 
     async findById(id: string): Promise<User | null> {
 
