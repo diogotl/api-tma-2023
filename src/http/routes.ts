@@ -14,6 +14,7 @@ import { createOrder } from './controllers/orders/create-order';
 export async function appRoutes(app: FastifyInstance) {
     app.post('/users', register);
     app.post('/sessions', authenticate);
+    app.patch('/token/refresh', authenticate);
     app.get('/profile', { onRequest: [verifyJWT] }, profile);
     app.get('/products', listProducts);
     app.post('/products', { onRequest: [verifyJWT] }, createProduct);
