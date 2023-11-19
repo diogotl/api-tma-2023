@@ -2,6 +2,12 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { makeUpdateProductUseCase } from '../../../use-cases/factories/make-update-product-use-case';
 import { z } from 'zod';
 
+type UpdateProductRequest = FastifyRequest<{
+    Params: {
+        id: string;
+    }
+}>;
+
 export async function updateProduct(request: FastifyRequest, reply: FastifyReply) {
 
     const updateProductBodySchema = z.object({
@@ -13,7 +19,7 @@ export async function updateProduct(request: FastifyRequest, reply: FastifyReply
     });
 
 
-    const { id } = request.params;
+    const { id } = request.params as UpdateProductRequest;
 
     const { title, description, price, image_url, category_id } = updateProductBodySchema.parse(request.body);
 
@@ -24,9 +30,8 @@ export async function updateProduct(request: FastifyRequest, reply: FastifyReply
         description,
         price,
         image_url,
-        category_id
+        category_id,
     });
-
 
     return reply.status(200).send(
         {

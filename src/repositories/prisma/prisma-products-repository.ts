@@ -35,18 +35,22 @@ export class PrismaProductsRepository implements ProductsRepository {
     async list(): Promise<Product[]> {
 
         const products = await prisma.product.findMany({});
-
+        products.forEach(product => {
+            product.price = Number(product.price) / 100;
+        });
         return products;
     }
 
     async show(id: string): Promise<Product | null> {
 
-        const product = prisma.product.findFirst(
+        const product = await prisma.product.findFirst(
             { where: { id } }
         );
 
+        if (product) {
+            product.price = Number(product?.price) / 100;
+        }
+
         return product;
     }
-
-
 }

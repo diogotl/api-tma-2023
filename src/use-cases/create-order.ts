@@ -1,12 +1,13 @@
+import { OrderItem } from '@prisma/client';
 import { OrderItemsRepository } from '../repositories/order-items-repository';
 import { OrdersRepository } from '../repositories/orders-repository';
 import { ProductsRepository } from '../repositories/products-repository';
 import { UsersRepository } from '../repositories/users-repository';
-import { UserAlreadyExistsError } from './errors/user-already-exists-error';
 
 interface OrderItemsProps {
     product_id: string,
-
+    quantity: number,
+    price: number,
 }
 
 interface CreateOrderUseCaseProps {
@@ -36,36 +37,41 @@ export class CreateOrderUseCase {
             user_id: userId
         });
 
-        const total = [];
+        const total: OrderItem[] = [];
 
-        orderItems.map(async (item: any) => {
+        for (const item of orderItems) {
 
             const doesProductExists = await this.productsRepository.exists(item.product_id);
 
             if (!doesProductExists) {
-                // throw new Error('O produto não existe');
-                throw new UserAlreadyExistsError();
-
+                throw new Error('O produto não existe');
             }
 
             const orderItem = await this.orderItemsRepository.create({
                 order_id: order.id,
                 product_id: item.product_id,
                 quantity: item.quantity,
-                price: item.price
+                price: item.price * 100,
             });
+
+            const orderItemFormatted = {
+                ...orderItem,
+                price: Number(orderItem.price) / 100,
+            };
 
             console.log(orderItem);
 
-            total.push(orderItem);
-        });
+            total.push(orderItemFormatted);
+        }
 
-        console.log(total);
-
-        return {
-            userId,
-            total
+        const orderWithItems = {
+            order: {
+                id: order.id,
+                user_id: order.user_id,
+            },
+            orderItems: total
         };
 
+        return orderWithItems;
     }
 }
