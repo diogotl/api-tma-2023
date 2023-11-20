@@ -29,31 +29,32 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply)
         }, {
             sign: {
                 sub: user.id,
+                expiresIn: '30d',
             },
         });
 
+        // console.log(token);
+
+        // const refreshToken = await reply.jwtSign({
+        //     role: user.role,
+        // }, {
+        //     sign: {
+        //         sub: user.id,
+        //         expiresIn: '7d',
+        //     },
+        // });
+
         console.log(token);
 
-        const refreshToken = await reply.jwtSign({
-            role: user.role,
-        }, {
-            sign: {
-                sub: user.id,
-                expiresIn: '7d',
-            },
-        });
+        return reply.status(200).send({ 'token': token });
 
-        console.log(token);
-
-        return reply
-            .setCookie('refreshCookie', refreshToken, {
-                path: '/',
-                secure: true,
-                sameSite: true,
-                httpOnly: true,
-            }).status(200).send({ 'token': token });
-
-
+        // return reply
+        //     .setCookie('refreshCookie', refreshToken, {
+        //         path: '/',
+        //         secure: true,
+        //         sameSite: true,
+        //         httpOnly: true,
+        //     }).status(200).send({ 'token': token });
 
     } catch (error) {
 

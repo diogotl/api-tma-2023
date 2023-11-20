@@ -10,8 +10,6 @@ export class ListProductsUseCase {
 
         const products = await this.productsRepository.list();
 
-        return {
-            products
-        };
+        return products;
     }
 }

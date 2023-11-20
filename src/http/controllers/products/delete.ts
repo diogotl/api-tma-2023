@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { makeDeleteProductUseCase } from '../../../use-cases/factories/make-delete-product-use-case';
-import { ProductNotFound } from '../../../use-cases/errors/product-not-found';
 
 type DeleteProductRequest = FastifyRequest<{
     Params: {
@@ -12,17 +11,9 @@ export async function deleteProduct(request: FastifyRequest, reply: FastifyReply
 
     const { id } = request.params as DeleteProductRequest;
 
-    try {
-        const deleteProductUseCase = makeDeleteProductUseCase();
+    const deleteProductUseCase = makeDeleteProductUseCase();
 
-        await deleteProductUseCase.execute(id);
-
-    } catch (err) {
-        if (err instanceof ProductNotFound) {
-            return reply.status(404).send({ message: err.message });
-        }
-        throw err;
-    }
+    await deleteProductUseCase.execute(id);
 
     return reply.status(201).send(
         {

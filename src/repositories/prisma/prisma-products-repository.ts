@@ -34,7 +34,11 @@ export class PrismaProductsRepository implements ProductsRepository {
     }
     async list(): Promise<Product[]> {
 
-        const products = await prisma.product.findMany({});
+        const products = await prisma.product.findMany({
+            include: {
+                category: true
+            }
+        });
         products.forEach(product => {
             product.price = Number(product.price) / 100;
         });
