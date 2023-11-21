@@ -24,7 +24,7 @@ export async function appRoutes(app: FastifyInstance) {
     app.put('/products/:id', { onRequest: [verifyJWT, verifyUserRole('ADMIN')] }, updateProduct);
     app.post('/orders', { onRequest: [verifyJWT] }, createOrder);
     app.get('/orders', { onRequest: [verifyJWT] }, getOrdersByUserId);
-    app.get('/categories', listCategories);
+    app.get('/categories', { onRequest: [verifyJWT, verifyUserRole('ADMIN')] }, listCategories);
     // app.patch('/products/:id', { onRequest: [verifyJWT] }, deleteProduct);
     // app.post('/categories', { onRequest: [verifyJWT, verifyUserRole('ADMIN')] }, createProduct);
 }
